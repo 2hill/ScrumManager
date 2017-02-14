@@ -22,6 +22,16 @@
   <li><a href="page4">Burndownchart</a></li>
 </ul>
 
+
+<!-- Variables Globals / Configs -->
+<?php
+$conn = new mysqli('localhost', 'root', '', 'scrum') 
+or die ('Cannot connect to db');
+
+$host = "localhost";
+?>
+
+
 <script>
 //Set the active class for tab with page name
     $(document).ready(function(){

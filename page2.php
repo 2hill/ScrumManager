@@ -1,7 +1,6 @@
     <html>
-        <?php include('header.php');
-        $conn = new mysqli('localhost', 'root', '', 'scrum') 
-        or die ('Cannot connect to db');
+        <?php
+            include('header.php');
         ?>
 
         </br></br>

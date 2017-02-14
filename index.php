@@ -3,16 +3,8 @@
 
         <!-- Requête SQL pour cherche le numero du sprint max et le sauvegarder dans la variable "data" -->
         <?php
-        
-        try{
-           $bdd = new PDO('mysql:host=localhost;dbname=scrum', 'root', '');
-        }
-        catch(Exception $e){
-            die('Erreur : ' . $e->getMessage());
-        }
-        
-        $req = $bdd->query('SELECT numero as nummax from sprint where id = (SELECT max(id) FROM sprint)');
-        $data = $req->fetch();
+        $req = $conn->query('SELECT numero as nummax from sprint where id = (SELECT max(id) FROM sprint)');
+        $data = $req->fetch_assoc();
         ?>
 
         </br></br></br></br></br></br></br></br></br>

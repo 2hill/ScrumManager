@@ -2,8 +2,6 @@
 
         <?php
             include('header.php');
-            $conn = new mysqli('localhost', 'root', '', 'scrum') 
-            or die ('Cannot connect to db');
         ?>
         
         </br>
@@ -14,7 +12,7 @@
             
                 <!-- /// Bouton /// -->
                 <div class="col-md-1"> 
-                    <button  class="btn btn-primary btn-block" onClick="moins1()">
+                    <button  class="btn suppression btn-primary btn-block" onClick="moins1()">
                       <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -50,7 +48,7 @@
                 <!-- /// BOUTON -> /// -->
                     <div class="col-md-1"> 
                     
-                        <button  class="btn btn-primary btn-block" onClick="plus1()">
+                        <button  class="btn ajout btn-primary btn-block" onClick="plus1()">
                           <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                         </button>
                     
@@ -120,33 +118,16 @@
                 </div>
         </div>
         
+        
+        
+        
+        
         <script>
-        
-            var localhost = "localhost";
-        
-            /// CHANGER LA VALEUR DE X ( FONCTION APPELEE LORS DE L'APPELLE DE LA FONCTION LORS DE LAPPUIE DU BOUTTON ) ///
-            var addNumber = function(){
-                x = parseInt($("#sprintIdList").val()) + 1;
-                if (x > DernierSprint){
-                    x -= 1;
-                    }
 
-                return x;          
-            };
-            
-            var removenumber = function(){
-                x = parseInt($("#sprintIdList").val()) -1 ;
-                if (x < PremierSprint){
-                    x += 1
-                    }
-                    
-                return x;         
-            };
-        
             /// FONCTION POUR RECCUPERER LES DONNEES DEPUIS LE SELECT, LE METTRE DANS LE LIENS DE L'API ET LE METTRE LE RESULTAT DANS LES DIFFERENTES VARIABLE ///
             var misajour = function(){
                         var x = $("#sprintIdList").val();
-                        var result = getdatafromurlNEW("http://"+localhost+"/FormulaireDonnee2/api/www/action/getChart/"+x);
+                        var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/getChart/"+x);
                         var heures = result[0];
                         var dates = result[1];
                         var seuils = result[2];
@@ -155,35 +136,49 @@
                         $("#sprintIdList").val(x);  
             };
         
-            /// ACTION EFFECTUER APRES AVOIR CHANGER LA VALEUR DE X ( FONCTION APPELEE LORS DE LA PRESSION SUR UN BOUTON ) ///
+            /// Lors de l'appuis sur le bouton pour voir le sprint suivant ///
             var plus1 = function(number){
                 
-                var SiErreur = parseInt($("#sprintIdList").val()) + 2;
-                $("#sprintIdList").val(addNumber());
+                var SiErreurPlus = parseInt($("#sprintIdList").val()) + 2; //si lorsque je vais au sprint suivant, il  me faut celui d'apres, donc + 2 au lieu de + 1 
                 
-                var result = getdatafromurlNEW("http://"+localhost+"/FormulaireDonnee2/api/www/action/sprintExist/"+x);
+                x = parseInt($("#sprintIdList").val()) + 1;
+                if (x > DernierSprint){
+                    x -= 1;
+                    }
+                
+                $("#sprintIdList").val(x);
+                
+                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);
                 
                 if (result)
                 {
                     misajour();    
                 }
                 
-                else //sinon (donc le sprint est nul, il a un soucie)
+                else if( ( !result ) && ( x < (DernierSprint - 1) ) )
                 { 
-                    console.log('Problème sur le sprint à afficher, je vais donc directement au : ', SiErreur);
-                    $("#sprintIdList").val(SiErreur);
+                    console.log('Problème sur le sprint à afficher, + , je vais donc directement au : ', SiErreurPlus);
+                    $("#sprintIdList").val(SiErreurPlus);
                     misajour();   
                 }
+                
+                bloquerbouton();
                 
             };
             
             //////////////////////////////////////////////////////////////////
             var moins1 = function(number){
                 
-                var SiErreur = parseInt($("#sprintIdList").val()) - 2;
-                $("#sprintIdList").val(removenumber());
+                var SiErreurMoins = parseInt($("#sprintIdList").val()) - 2;
+                
+                x = parseInt($("#sprintIdList").val()) -1;
+                if (x < PremierSprint){
+                    x += 1
+                    }
+                
+                $("#sprintIdList").val(x);
                
-                var result = getdatafromurlNEW("http://"+localhost+"/FormulaireDonnee2/api/www/action/sprintExist/"+x);
+                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);
                     
                  
                 if (result) //si le sprint fonctionne
@@ -191,13 +186,33 @@
                     misajour();  
                 }
                 
-                else //sinon ( donc le sprint est nul, il a un soucie)
+                else if( ( !result ) && ( x > (PremierSprint + 1) ) )
                 {
-                   console.log('Problème sur le sprint à afficher, je vais donc directement au : ', $SiErreur);
-                   $("#sprintIdList").val(SiErreur);
+                   console.log('Problème sur le sprint à afficher, - , je vais donc directement au : ', SiErreurMoins);
+                   $("#sprintIdList").val(SiErreurMoins);
                    misajour();  
                 }
+                
+                
+                bloquerbouton();
 
+            };
+            
+            var bloquerbouton = function(){
+                
+               if ((x < DernierSprint) && (x > PremierSprint)){
+                   $('button.ajout').prop('disabled', false);
+                   $('button.suppression').prop('disabled', false);
+                    }
+                    
+                else if ( x == DernierSprint )
+                {
+                   $('button.ajout').prop('disabled', true);
+                }
+                
+                else {
+                     $('button.suppression').prop('disabled', true); 
+                    }
             };
            
             /// FONCTION POUR TRANSFORMER L'URL COMME IL FAUT ///
@@ -223,9 +238,11 @@
             //Fonction lorsque l'on choisie un nouveau sprint depuis la liste deroulante
             var sprintIdListChanged = function(){
                 
+                
+                
                 var x = $("#sprintIdList").val();
                 
-                var result = getdatafromurlNEW("http://"+localhost+"/FormulaireDonnee2/api/www/action/sprintExist/"+x);
+                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);
                     
                 if (result)
                 {
@@ -239,9 +256,12 @@
                     misajour();
                 }
                 
+                console.log('bim1');
+                bloquerbouton();
+                console.log('bim2');
             };
             
-            var result = getdatafromurlNEW("http://"+localhost+"/FormulaireDonnee2/api/www/action/getChart/0");
+            var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/getChart/0");
                   
             if (result != null)
             {
