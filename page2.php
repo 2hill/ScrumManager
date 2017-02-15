@@ -10,7 +10,7 @@
         
             <div class="row">
             
-                <form method="POST" action="AjoutHeureAttribution.php">
+                <form method="POST" action="InsertionBdd\AjoutHeureAttribution.php">
                 
                     <div class="col-sm-3"> 
                     

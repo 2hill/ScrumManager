@@ -119,28 +119,30 @@
         </div>
         
         <script>
-
+        
+            
+            
             /// FONCTION POUR RECCUPERER LES DONNEES DEPUIS LE SELECT, LE METTRE DANS LE LIENS DE L'API ET LE METTRE LE RESULTAT DANS LES DIFFERENTES VARIABLE ///
             var misajour = function(){
+                
                         var x = $("#sprintIdList").val();
+                        bloquerbouton();
                         var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/getChart/"+x);
                         var heures = result[0];
                         var dates = result[1];
                         var seuils = result[2];
                         var sprintou = result[3];
                         createChartNEW(heures, dates, seuils, sprintou);
-                        $("#sprintIdList").val(x);  
+                        $("#sprintIdList").val(x); 
+                       
             };
         
-            /// Lors de l'appuis sur le bouton pour voir le sprint suivant ///
+            /// Lors de l'appuis sur le bouton pour voir le sprint suivant ou précédent///
             var plus1 = function(number){
                 
                 var SiErreurPlus = parseInt($("#sprintIdList").val()) + 2; //si lorsque je vais au sprint suivant, il  me faut celui d'apres, donc + 2 au lieu de + 1 
                 
                 x = parseInt($("#sprintIdList").val()) + 1;
-                if (x > DernierSprint){
-                    x -= 1;
-                    }
                 
                 $("#sprintIdList").val(x);
                 
@@ -151,15 +153,20 @@
                     misajour();    
                 }
                 
-                else if( ( !result ) && ( x < (DernierSprint - 1) ) )
+                else if ( !result )
                 { 
+                    if ( x < ( DernierSprint - 1 ) ){
                     console.log('Problème sur le sprint à afficher, + , je vais donc directement au : ', SiErreurPlus);
                     $("#sprintIdList").val(SiErreurPlus);
-                    misajour();   
+                    misajour();
+                    }
+                    
+                    else
+                    {
+                      DemanderNouveauSprint(); 
+                    }
+                    
                 }
-                
-                bloquerbouton();
-                
             };
             
             //////////////////////////////////////////////////////////////////
@@ -168,71 +175,98 @@
                 var SiErreurMoins = parseInt($("#sprintIdList").val()) - 2;
                 
                 x = parseInt($("#sprintIdList").val()) -1;
-                if (x < PremierSprint){
-                    x += 1
-                    }
                 
                 $("#sprintIdList").val(x);
                
-                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);
+                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x); //check si le resultat est true ou false
                     
-                if (result) //si le sprint fonctionne
+                if (result) //si le sprint exist, resultat true donc passage ici
                 {
                     misajour();  
                 }
                 
-                else if( ( !result ) && ( x > (PremierSprint + 1) ) )
+                else if( !result )
                 {
-                   console.log('Problème sur le sprint à afficher, - , je vais donc directement au : ', SiErreurMoins);
-                   $("#sprintIdList").val(SiErreurMoins);
-                   misajour();  
+                   if  ( x > ( PremierSprint + 1 ) ){
+                       console.log('Problème sur le sprint à afficher, - , je vais donc directement au : ', SiErreurPlus);
+                       $("#sprintIdList").val(SiErreurMoins);
+                        misajour(); 
+                   }
+                   else{
+                       DemanderNouveauSprint(); 
+                   }
+                    
                 }
                 
-                bloquerbouton();
-
             };
             
+            //Fonction pour bloquer les bouton de changement de sprints si on est au sprint minimum ou maximum ou entre
             var bloquerbouton = function(){
                 
+               x = parseInt($("#sprintIdList").val());
+               
+               console.log('on rentre dans bloquer bouton, x vaut : ',x);
+               
                if ((x < DernierSprint) && (x > PremierSprint)){
+                   console.log('ici');
                    $('button.ajout').prop('disabled', false);
                    $('button.suppression').prop('disabled', false);
                     }
                     
                 else if ( x == DernierSprint )
                 {
+                    console.log('ici1');
+                   $('button.suppression').prop('disabled', false);
                    $('button.ajout').prop('disabled', true);
                 }
                 
-                else {
-                     $('button.suppression').prop('disabled', true); 
-                    }
+                else
+                {
+                   console.log('ici2');
+                   $('button.suppression').prop('disabled', true);
+                   $('button.ajout').prop('disabled', false);
+                }
             };
+            
+            //Si le sprint ne peux s'afficher alors demander a l'utilisateur d'en rentrer un nouveau
+            var DemanderNouveauSprint = function (){
+                
+                x = parseInt(prompt("Le sprint ne peut être affiche car manque d'information, veuillez indiquer un autre sprint", x));
+                    
+                if (( isFinite(x) ) && ( x >= PremierSprint ) && ( x <= DernierSprint ) ){
+                    $("#sprintIdList").val(x);
+                    misajour();
+                }
+                else{
+                    DemanderNouveauSprint();
+                }
+            }
            
             /// FONCTION POUR TRANSFORMER L'URL COMME IL FAUT ///
             var getdatafromurlNEW = function(myurl)
             {
-                var toret = null;
+                var exist = null;
                 console.log("getdatafromurlNEW", myurl);
                 $.ajax({
                     url: myurl,
                     async: false,
                     success: function(result){
-                        toret = result;
+                        exist = result;
                     },
                     error: function(xhr){
                         console.log("error NEW", xhr);
-                        alert("Le sprint selectionner ne peut être affiché car manque d'info. Veuillez en selectionner un autre. Merci1");
+                        DemanderNouveauSprint();
+                        
                     }
                 });
-                return (toret);
-                console.log('coucou',toret)
+                return (exist);
+                console.log('coucou',exist)
             };
             
             //Fonction lorsque l'on choisie un nouveau sprint depuis la liste deroulante
             var sprintIdListChanged = function(){
 
-                var x = $("#sprintIdList").val();
+                var x = parseInt($("#sprintIdList").val());
                 
                 var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);
                     
@@ -240,25 +274,14 @@
                 {
                     misajour();
                 }
-                else
-                {
-                    alert("Le sprint selectionner ne peut être affiché car manque d'info. Veuillez en selectionner un autre. Merci2.");
-                    x = PremierSprint;
-                    $("#sprintIdList").val(x);  
-                    misajour();
+                else{
+                    DemanderNouveauSprint();
                 }
                 
-                console.log('bim1');
-                bloquerbouton();
-                console.log('bim2');
             };
             
-            var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/getChart/0");
-                  
-            if (result != null)
-            {
-                misajour();
-            }
+            misajour();
+                
             
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             

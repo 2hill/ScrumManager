@@ -12,7 +12,7 @@
             
                 <div class="col-sm-3"> 
                     
-                    <form method="POST" action="AjoutHeureDescendue.php">
+                    <form method="POST" action="InsertionBdd\AjoutHeureDescendue.php">
                      
                         <!-- ///  AFFICHER LISTE SPRINT  /// -->
                         <div class="row">

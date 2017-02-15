@@ -63,10 +63,7 @@ Voici une liste de foncionalitées à ajouter dans l'application :
   - Permettre l'actualisation des données affichées lorsque l'on sélectionne un sprint différent
     - Pour les heures attribuées. (page2.php)
     - Pour les heures descendues. (page3.php)
-  - Debugage plus appronfie sur l'affichage de la Burdownchart
-    - Si l'on sélectionne un sprint comportant un manque de données nécessaire pour son affichage faire quelque chose.
-    - Lorsque l'on sélectionne le premier ou dernier sprint depuis la liste déroulante, bloquer le bon bouton.
-  - Améliorer la connexion à la base de données ?
+  - Améliorer la connexion à la base de données depuis les différents page ?
 
 ## Développé avec
 
