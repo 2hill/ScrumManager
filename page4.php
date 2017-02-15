@@ -120,8 +120,6 @@
         
         <script>
         
-            
-            
             /// FONCTION POUR RECCUPERER LES DONNEES DEPUIS LE SELECT, LE METTRE DANS LE LIENS DE L'API ET LE METTRE LE RESULTAT DANS LES DIFFERENTES VARIABLE ///
             var misajour = function(){
                 
@@ -165,7 +163,6 @@
                     {
                       DemanderNouveauSprint(); 
                     }
-                    
                 }
             };
             
@@ -193,7 +190,7 @@
                         misajour(); 
                    }
                    else{
-                       DemanderNouveauSprint(); 
+                        DemanderNouveauSprint(); 
                    }
                     
                 }
@@ -256,7 +253,6 @@
                     error: function(xhr){
                         console.log("error NEW", xhr);
                         DemanderNouveauSprint();
-                        
                     }
                 });
                 return (exist);
@@ -282,7 +278,6 @@
             
             misajour();
                 
-            
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
         </script>
