@@ -118,10 +118,6 @@
                 </div>
         </div>
         
-        
-        
-        
-        
         <script>
 
             /// FONCTION POUR RECCUPERER LES DONNEES DEPUIS LE SELECT, LE METTRE DANS LE LIENS DE L'API ET LE METTRE LE RESULTAT DANS LES DIFFERENTES VARIABLE ///
@@ -180,7 +176,6 @@
                
                 var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);
                     
-                 
                 if (result) //si le sprint fonctionne
                 {
                     misajour();  
@@ -192,7 +187,6 @@
                    $("#sprintIdList").val(SiErreurMoins);
                    misajour();  
                 }
-                
                 
                 bloquerbouton();
 
@@ -237,9 +231,7 @@
             
             //Fonction lorsque l'on choisie un nouveau sprint depuis la liste deroulante
             var sprintIdListChanged = function(){
-                
-                
-                
+
                 var x = $("#sprintIdList").val();
                 
                 var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);

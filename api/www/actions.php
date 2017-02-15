@@ -3,7 +3,6 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-
 $app->get('/action/getChart/{numero}', function ($numero) use ($app) {
     $qb = $app['db']->createQueryBuilder('');
 
@@ -28,8 +27,6 @@ $app->get('/action/getChart/{numero}', function ($numero) use ($app) {
     $tmpQuery = $bdd->prepare($sql);
     $tmpQuery->execute();
 
-
-
     $result = $tmpQuery->fetchAll();
 
     $values = [];
@@ -45,7 +42,6 @@ $app->get('/action/getChart/{numero}', function ($numero) use ($app) {
     }
     if (!$values && !$hours && !$interferences && !$sprintou ){
          $app->abort(404, "Le Sprint n°$numero manque de données pour afficher le tableau" );
-         
     }
     
     $toReturn[] = $values;
@@ -78,8 +74,6 @@ $app->get('/action/sprintExist/{numero}', function ($numero) use ($app) {
     }
     $tmpQuery = $bdd->prepare($sql);
     $tmpQuery->execute();
-
-
 
     $result = $tmpQuery->fetchAll();
     if(count($result) > 0){

@@ -120,9 +120,9 @@
                 
                 <div class="col-sm-6">
                 
-                    <h4>Heures descendues par Employé(e), par Projet</h4>
+                    <h4><b>Heures descendue(s) par Employé(e), par Projet, par Jour</b></h4>
                     
-                        <table id="tomlabonnenote" class="table table-striped table-bordered">
+                        <table id="datatable" class="table table-striped table-bordered">
                  
                             <thead>
                                 <tr>
@@ -185,7 +185,7 @@
                 <!--Total heures descendues par jour-->
                 <div class="col-sm-3"  style="background-color: white;">
                 
-                    <h4>Heures descendues par jours</h4>
+                    <h4><b>Heures descendue(s) par jour</b></h4>
                     
                         <table class="table table-striped table-bordered">
                         
@@ -199,7 +199,6 @@
                             <tbody>
                           
                                 <?php
-                                
                                     try
                                     {
                                         $bdd = new PDO('mysql:host=localhost;dbname=scrum;charset=utf8', 'root', '');
@@ -228,14 +227,11 @@
                                     }
                                     
                                         $reponse->closeCursor();
-                                        
                                 ?>
                             
                             </tbody>
                             
                         </table>
-                        
-                        
                         
                         <table class="table">
                             <thead>
@@ -290,7 +286,7 @@
         <script>
         // script pour transformer la table bootstrap en datable bootstrap et avoir le mode de trie possible
         $(document).ready(function() {
-            $('#tomlabonnenote').DataTable();
+            $('#datatable').DataTable();
         } );
 
         //

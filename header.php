@@ -31,7 +31,6 @@ or die ('Cannot connect to db');
 $host = "localhost";
 ?>
 
-
 <script>
 //Set the active class for tab with page name
     $(document).ready(function(){
@@ -41,7 +40,6 @@ $host = "localhost";
         $('li.active').removeClass('active');
         $('a[href='+lastsegment+']').parent().addClass('active');
     });
-    
     
 </script>
 

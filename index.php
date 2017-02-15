@@ -1,8 +1,6 @@
     <html class="bg">
-        <?php include('header.php'); ?>
-
-        <!-- Requête SQL pour cherche le numero du sprint max et le sauvegarder dans la variable "data" -->
-        <?php
+        <?php include('header.php'); 
+        
         $req = $conn->query('SELECT numero as nummax from sprint where id = (SELECT max(id) FROM sprint)');
         $data = $req->fetch_assoc();
         ?>
@@ -51,7 +49,8 @@
                     </div>
                 </div>
 
-    </br></br>
+                </br></br>
+                
                 <!-- Le Boutton submit -->
                     <div class="row">
                     <div class="col-sm-4"></div>
@@ -126,7 +125,6 @@
                     };
                 }; 
                 
-                
                 //si mois dépasse 12 alors passer à l'année prochaine et remettre le bon mois.
                 if(m > 12){
                   m -= 12;
@@ -144,6 +142,7 @@
                 data = a + "-" + m + "-" + j;
                 _dat.value = data;
             };
+            
             DateApres("#DateFin");
 
         </script>

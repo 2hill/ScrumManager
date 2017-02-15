@@ -66,6 +66,7 @@ Voici une liste de foncionalitées à ajouter dans l'application :
   - Debugage plus appronfie sur l'affichage de la Burdownchart
     - Si l'on sélectionne un sprint comportant un manque de données nécessaire pour son affichage faire quelque chose.
     - Lorsque l'on sélectionne le premier ou dernier sprint depuis la liste déroulante, bloquer le bon bouton.
+  - Améliorer la connexion à la base de données ?
 
 ## Développé avec
 
