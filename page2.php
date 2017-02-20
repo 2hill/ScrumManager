@@ -10,7 +10,7 @@
         
             <div class="row">
             
-                <form method="POST" action="InsertionBdd\AjoutHeureAttribution.php">
+                <form method="POST" action="EditerBdd\AjoutHeureAttribution.php">
                 
                     <div class="col-sm-3"> 
                     
@@ -19,7 +19,7 @@
                             <div  class="col-sm-11">
                                 <div class="form-group">
                                     <label for="sel1">Sprint n°</label>
-                                        <select class="form-control"  name="numerosprint">
+                                        <select class="form-control"  id="sprintIdList" onchange='update();'>
                                             <?php
                                             $result = $conn->query("select id, numero from sprint order by id desc");
                                             
@@ -107,90 +107,28 @@
                 
                     <h4><b>Heures attribuée(s) par Employé(e), par Projet</b></h4>
                     
-                    <!-- /// AFFICHER LISTE HEURE DESCENDU PAR PERSONNE PAR PROJET PAR DATE  /// -->
-                        <?php
-                            try
-                            {
-                                $bdd = new PDO('mysql:host=localhost;dbname=scrum;charset=utf8', 'root', '');
-                            }
-                            catch(Exception $e)
-                            {
-                                    die('Erreur : '.$e->getMessage());
-                            }
-                            
-                            $reponse = $bdd->query('select sprint.numero as Sprint, attribution.heure as NbHeure, projet.nom as projet, employe.prenom as employe FROM attribution inner JOIN employe ON employe.id = attribution.id_Employe INNER JOIN projet ON projet.id = attribution.id_Projet INNER JOIN sprint ON sprint.id = attribution.id_Sprint where id_sprint=(SELECT max(id) FROM sprint) ORDER BY attribution.id DESC');
-                            
-                              echo "<table id=\"datatable\" class=\"table table-striped table-bordered\">";
-                                echo "<thead>";
-                                 echo " <tr>";
-                                    echo "<th>Employé(e)</th>";
-                                   echo " <th>Projet</th>";
-                                   echo " <th>Heure(s)</th>";
-                                echo "  </tr>";
-                              echo "  </thead>";
-                              echo "  <tbody>";
-                            
-                            while ($donnees = $reponse->fetch())
-                            {
-                                echo "  <tr>";
-                                echo "  <td>";
-                                echo  $donnees['employe'];
-                                echo "  </td>";
-                                echo "  <td>";
-                                echo  $donnees['projet'];
-                                echo "  </td>";
-                                echo "  <td>";
-                                echo  $donnees['NbHeure'];
-                                echo "  </td>";
-                                echo "  </tr>";
-                            }
-                                echo "  </tbody>";
-                            $reponse->closeCursor();
-
-                            echo "</table>";
-                        ?>
-                        
+                        <table id="datatable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Employé(e)</th>
+                                    <th>Projet</th>
+                                    <th>Heure(s)</th>
+                                </tr>
+                            </thead>
+                        </table>  
                 </div>
                        
                 <div class="col-sm-3"> 
                 
-                    <?php
-                        try
-                        {
-                            $bdd = new PDO('mysql:host=localhost;dbname=scrum;charset=utf8', 'root', '');
-                        }
-                        catch(Exception $e)
-                        {
-                                die('Erreur : '.$e->getMessage());
-                        }
-
-                        $reponse = $bdd->query('select  sprint.numero as Sprint, sum(attribution.heure) as totHeure
-                                    FROM attribution INNER JOIN sprint on sprint.id = attribution.id_Sprint
-                                    where id_sprint=(SELECT max(id) FROM sprint)
-                                    GROUP BY sprint.id');
-                        
-                        echo "<table class=\"table\">";
-                                echo "<thead>";
-                                 echo " <tr>";
-                                    echo "<th>Total heures attribués pour le sprint</th>";
-                                echo "  </tr>";
-                              echo "  </thead>";
-                              echo "  <tbody>";
-                        
-                        
-                        while ($donnees = $reponse->fetch())
-                        {
-                            echo "  <tr>";
-                                echo "  <td>";
-                                echo  $donnees['totHeure'];
-                                echo "  </td>";
-                                echo "  </tr>";
-                        }
-                        echo "  </tbody>";
-                        echo "</table>";
-                        $reponse->closeCursor();
+                    <h4><b>Total heures attribués pour le sprint</b></h4>
                     
-                    ?>
+                        <table id="datatable2" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                        </table> 
                 
                 </div>   
                 
@@ -201,9 +139,94 @@
         </br>
         
         <script>
+        
+           
+           /////////// Attrapper les infos de la requete sql
+           var getdatafromurlNEW = function(myurl)
+            {
+                var exist = null;
+                console.log("getdatafromurlNEW", myurl);
+                $.ajax({
+                    url: myurl,
+                    async: false,
+                    success: function(result){
+                        exist = result;
+                    },
+                    error: function(xhr){
+                        console.log("error NEW", xhr);
+                        
+                    }
+                });
+                return (exist);
+                console.log('coucou',exist)
+            };
+            
+            /////////// Fonction pour mettre à jours l'affichage
+            var update = function(){
+            x = parseInt($("#sprintIdList").val()); 
+            
+            var hdown = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gethourdown/"+x);
+            var tothdown = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gettothourdown/"+x);
+            
+            var hours = hdown[2];
+            
+            var Lehdown = [];
+            var Letothdown = [];
+            
+          
+            
+            // var data = "[\n";
+            // console.log('resultat pour employe : ', employes);
+            // console.log('resultat pour projet ', project);
+            // console.log('resultat pour heures ', hours);
+            
+            for (i = 1; i < hours.length; i++) {
+               
+                Lehdown.push({name: hdown[0][i], project: hdown[1][i], hours: hdown[2][i]});
+                // data += "{\n\"name\": \"" + hdown[0][i]+"\",\n \"project\": \""+hdown[1][i]+"\",\n \"hours\": \""+ hdown[2][i] + "\"\n},\n";
+             
+             }
+             
+                Letothdown.push({tot: tothdown[0]});
+            // data = data.slice(0, -1);
+            // data += "\n]"
+            // data = eval(data);
+            // console.log(data);
+            
+            console.log('Une fois convertie en objet js : ',Lehdown);
+            console.log('Une fois convertie en objet js : ',Letothdown);
+            
+            $('#datatable').DataTable({
+                "bDestroy": true,
+                data: Lehdown,
+                columns: [
+                    { data: 'name' },
+                    { data: 'project' },
+                    { data: 'hours' }
+                ]
+            });
+               
+            $('#datatable2').DataTable({
+                "paging":   false,
+                "ordering": false,
+                "info":     false,
+                "bFilter": false,
+                "bDestroy": true,
+                data: Letothdown,
+                columns: [
+                    { data: 'tot' }
+                ]
+            });
+               
+            };
+            
+            /////////// Au premier lancement de la page
             $(document).ready(function() {
-            $('#datatable').DataTable();
+                
+            update();
+            
             } );
+                        
         </script>
         
     </html>

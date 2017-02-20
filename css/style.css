@@ -21,3 +21,8 @@ body {
      background-color:white;
 }
 
+.border {
+    color:white;
+    border-bottom:5px ;
+    text-align:center;
+}

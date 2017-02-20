@@ -12,14 +12,14 @@
             
                 <div class="col-sm-3"> 
                     
-                    <form method="POST" action="InsertionBdd\AjoutHeureDescendue.php">
+                    <form method="POST" action="EditerBdd\AjoutHeureDescendue.php">
                      
                         <!-- ///  AFFICHER LISTE SPRINT  /// -->
                         <div class="row">
                             <div class="col-sm-11">
                                 <div class="form-group">
                                     <label for="sel1">Sprint n°</label>
-                                        <select class="form-control"  name="numerosprint">
+                                        <select class="form-control"  id="sprintIdList" onchange='update();'>
                                             
                                             <?php
                                                 $result = $conn->query("select id, numero from sprint order by id desc");
@@ -122,7 +122,7 @@
                 
                     <h4><b>Heures descendue(s) par Employé(e), par Projet, par Jour</b></h4>
                     
-                        <table id="datatable" class="table table-striped table-bordered">
+                        <table id="datatable1" class="table table-striped table-bordered">
                  
                             <thead>
                                 <tr>
@@ -132,51 +132,6 @@
                                     <th>Date</th>
                                 </tr>
                             </thead>
-                          
-                            <tbody>
-                        
-                                <!-- ///  AFFICHER LISTE HEURE DESCENDU PAR PERSONNE PAR PROJET PAR DATE  /// -->
-                                <?php
-                                
-                                try
-                                {
-                                    $bdd = new PDO('mysql:host=localhost;dbname=scrum;charset=utf8', 'root', '');
-                                }
-                                catch(Exception $e)
-                                {
-                                        die('Erreur : '.$e->getMessage());
-                                }
-
-                                $reponse = $bdd->query('select  sprint.id as Sprint, heuresdescendues.heure as NbHeure, heuresdescendues.DateDescendu as date, projet.nom as projet, employe.prenom as employe
-                                FROM heuresdescendues inner JOIN employe ON heuresdescendues.id_Employe = employe.id
-                                INNER JOIN projet on projet.id = heuresdescendues.id_Projet
-                                INNER JOIN sprint on sprint.id = heuresdescendues.id_Sprint
-                                WHERE id_sprint=(SELECT max(id) FROM sprint)
-                                ORDER BY heuresdescendues.id desc');
-                                
-                                while ($donnees = $reponse->fetch())
-                                {
-                                    echo "  <tr>";
-                                        echo "  <td>";
-                                        echo  $donnees['employe'];
-                                        echo "  </td>";
-                                        echo "  <td>";
-                                        echo  $donnees['projet'];
-                                        echo "  </td>";
-                                        echo "  <td>";
-                                        echo  $donnees['NbHeure'];
-                                        echo "  </td>";
-                                        echo "  <td>";
-                                        echo  $donnees['date'];
-                                        echo "  </td>";
-                                        echo "  </tr>";
-                                }
-                                
-                                $reponse->closeCursor();
-                                
-                                ?>
-                                
-                            </tbody>
                             
                         </table>
                         
@@ -187,93 +142,26 @@
                 
                     <h4><b>Heures descendue(s) par jour</b></h4>
                     
-                        <table class="table table-striped table-bordered">
-                        
-                           <thead>
+                        <table id="datatable2" class="table table-striped table-bordered">
+                 
+                            <thead>
                                 <tr>
-                                    <th>Total heures</th>
+                                    <th>Heure(s)</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
-                          
-                            <tbody>
-                          
-                                <?php
-                                    try
-                                    {
-                                        $bdd = new PDO('mysql:host=localhost;dbname=scrum;charset=utf8', 'root', '');
-                                    }
-                                    catch(Exception $e)
-                                    {
-                                            die('Erreur : '.$e->getMessage());
-                                    }
-
-                                    $reponse = $bdd->query('select  sprint.id as Sprint, sum(heuresdescendues.heure) as totHeure, heuresdescendues.DateDescendu as date
-                                    FROM heuresdescendues inner JOIN employe ON heuresdescendues.id_Employe = employe.id
-                                    INNER JOIN sprint on sprint.id = heuresdescendues.id_Sprint
-                                    where id_sprint=(SELECT max(id) FROM sprint)
-                                    GROUP BY sprint.id, heuresdescendues.DateDescendu');
-                                    
-                                    while ($donnees = $reponse->fetch())
-                                    {
-                                        echo "  <tr>";
-                                            echo "  <td>";
-                                            echo  $donnees['totHeure'];
-                                            echo "  </td>";
-                                            echo "  <td>";
-                                            echo  $donnees['date'];
-                                            echo "  </td>";
-                                            echo "  </tr>";
-                                    }
-                                    
-                                        $reponse->closeCursor();
-                                ?>
-                            
-                            </tbody>
                             
                         </table>
                         
-                        <table class="table">
+                        <h4><b>Heures descendue(s) par jour</b></h4>
+                    
+                        <table id="datatable3" class="table table-striped table-bordered">
+                 
                             <thead>
                                 <tr>
-                                <th>Total heures descendues pour le sprint</th>
+                                    <th>total</th>
                                 </tr>
                             </thead>
-                            
-                            <tbody>
-                        
-                                <?php
-                                
-                                try
-                                {
-                                    $bdd = new PDO('mysql:host=localhost;dbname=scrum;charset=utf8', 'root', '');
-                                }
-                                
-                                catch(Exception $e)
-                                {
-                                        die('Erreur : '.$e->getMessage());
-                                }
-
-                                $reponse = $bdd->query('select  sprint.id as Sprint, sum(heuresdescendues.heure) as totHeure
-                                        FROM heuresdescendues inner JOIN employe ON heuresdescendues.id_Employe = employe.id
-                                        INNER JOIN sprint on sprint.id = heuresdescendues.id_Sprint
-                                        where id_sprint=(SELECT max(id) FROM sprint)
-                                        GROUP BY sprint.id');
-                                
-                                while ($donnees = $reponse->fetch())
-                                {
-                                    echo "  <tr>";
-                                        echo "  <td>";
-                                        echo  $donnees['totHeure'];
-                                        echo "  </td>";
-                                    echo "  </tr>";
-                                }
-                                
-                                $reponse->closeCursor();
-                                
-                                ?>
-                                
-                            </tbody>
                             
                         </table>
                     
@@ -284,19 +172,113 @@
         </div>
         
         <script>
-        // script pour transformer la table bootstrap en datable bootstrap et avoir le mode de trie possible
+        //Script au lancement
         $(document).ready(function() {
-            $('#datatable').DataTable();
+                
+            update();
+            
         } );
+            
+        /////////// Attrapper les infos de la requete sql
+        var getdatafromurlNEW = function(myurl)
+        {
+            var exist = null;
+            console.log("getdatafromurlNEW", myurl);
+            $.ajax({
+                url: myurl,
+                async: false,
+                success: function(result){
+                    exist = result;
+                },
+                error: function(xhr){
+                    console.log("error NEW", xhr);
+                    
+                }
+            });
+            return (exist);
+            console.log('coucou',exist)
+        };
+            
+        /////////// Fonction pour mettre à jours l'affichage
+        var update = function(){
+            
+            x = parseInt($("#sprintIdList").val()); 
+            
+            var hdown = getdatafromurlNEW("http://localhost/ScrumManager/api/www/heuresdescendues/LaListeGeneral/"+x);
+            var hdownperday = getdatafromurlNEW("http://localhost/ScrumManager/api/www/heuresdescendues/LaListeParJour/"+x);
+            var hdowntotal = getdatafromurlNEW("http://localhost/ScrumManager/api/www/heuresdescendues/LaListeTotal/"+x);
+            
+            var heures = hdown[0];
+            var date = hdownperday[1];
+            var heuretotal = hdowntotal[0]
+            
+            var Leshdown = [];
+            var LeshdownParJour = [];
+            var LeshdownTotal = [];
+                
+            for (i = 1; i < heures.length; i++) {
+               
+                Leshdown.push({heure: hdown[0][i], date: hdown[1][i], projet: hdown[2][i], employe: hdown[3][i]});
+             
+             }
+                 
+            for (i = 1; i < date.length; i++) {
 
-        //
+                LeshdownParJour.push({heure: hdownperday[0][i], date: hdownperday[1][i]});
+
+            }
+            
+            LeshdownTotal.push({total: hdowntotal[0]});
+                
+            console.log('Une fois convertie en objet js : ',Leshdown);
+            console.log('Une fois convertie en objet js : ',LeshdownParJour);
+            console.log('Une fois convertie en objet js : ',LeshdownTotal);
+                
+            $('#datatable1').DataTable({
+                "bDestroy": true,
+                data: Leshdown,
+                columns: [
+                    { data: 'employe' },
+                    { data: 'projet' },
+                    { data: 'heure' },
+                    { data: 'date' }
+                ]
+            });
+            
+            $('#datatable2').DataTable({
+                "paging":   false,
+                "info":     false,
+                "bFilter":  false,
+                "bDestroy": true,
+                data: LeshdownParJour,
+                columns: [
+                    { data: 'heure' },
+                    { data: 'date' }
+                ]
+            });
+            
+            $('#datatable3').DataTable({
+                "paging":   false,
+                "ordering":   false,
+                "info":     false,
+                "bFilter":  false,
+                "bDestroy": true,
+                data: LeshdownTotal,
+                columns: [
+                    { data: 'total' }
+                ]
+            });
+            
+        };
+            
+        //Donnée a l'objet datedebut le format de date
         $('#dateDebut').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
             minView : 2
         });
 
-        //
+        //Changer l'affichage de la date si possible erreur
         function DateAujourdhui(_id){
             var _dat = document.querySelector(_id);
             var aujourdui = new Date(),
@@ -315,6 +297,7 @@
             _dat.value = data;
         };
         DateAujourdhui("#dateDebut");
+        
         </script>
 
     </html>
