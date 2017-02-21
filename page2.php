@@ -139,10 +139,9 @@
         </br>
         
         <script>
-        
            
-           /////////// Attrapper les infos de la requete sql
-           var getdatafromurlNEW = function(myurl)
+            /////////// Attrapper les infos de la requete sql
+            var getdatafromurlNEW = function(myurl)
             {
                 var exist = null;
                 console.log("getdatafromurlNEW", myurl);
@@ -158,47 +157,32 @@
                     }
                 });
                 return (exist);
-                console.log('coucou',exist)
             };
             
-            /////////// Fonction pour mettre à jours l'affichage
+            /////////// Fonction pour mettre à jour l'affichage
             var update = function(){
             x = parseInt($("#sprintIdList").val()); 
             
-            var hdown = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gethourdown/"+x);
-            var tothdown = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gettothourdown/"+x);
+            var hatt = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gethouratt/"+x);
+            var tothatt = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gettothouratt/"+x);
             
-            var hours = hdown[2];
+            var hours = hatt[2];
             
-            var Lehdown = [];
-            var Letothdown = [];
-            
-          
-            
-            // var data = "[\n";
-            // console.log('resultat pour employe : ', employes);
-            // console.log('resultat pour projet ', project);
-            // console.log('resultat pour heures ', hours);
+            var Lehatt = [];
+            var Letothatt = [];
             
             for (i = 1; i < hours.length; i++) {
-               
-                Lehdown.push({name: hdown[0][i], project: hdown[1][i], hours: hdown[2][i]});
-                // data += "{\n\"name\": \"" + hdown[0][i]+"\",\n \"project\": \""+hdown[1][i]+"\",\n \"hours\": \""+ hdown[2][i] + "\"\n},\n";
+                Lehatt.push({name: hatt[0][i], project: hatt[1][i], hours: hatt[2][i]});
+            }
              
-             }
-             
-                Letothdown.push({tot: tothdown[0]});
-            // data = data.slice(0, -1);
-            // data += "\n]"
-            // data = eval(data);
-            // console.log(data);
+            Letothatt.push({tot: tothatt[0]});
             
-            console.log('Une fois convertie en objet js : ',Lehdown);
-            console.log('Une fois convertie en objet js : ',Letothdown);
+            console.log('Une fois heure attribue convertie en objet js : ',Lehatt);
+            console.log('Une fois total heure attribue convertie en objet js : ',Letothatt);
             
             $('#datatable').DataTable({
                 "bDestroy": true,
-                data: Lehdown,
+                data: Lehatt,
                 columns: [
                     { data: 'name' },
                     { data: 'project' },
@@ -212,7 +196,7 @@
                 "info":     false,
                 "bFilter": false,
                 "bDestroy": true,
-                data: Letothdown,
+                data: Letothatt,
                 columns: [
                     { data: 'tot' }
                 ]
@@ -222,9 +206,7 @@
             
             /////////// Au premier lancement de la page
             $(document).ready(function() {
-                
-            update();
-            
+                update();
             } );
                         
         </script>

@@ -37,8 +37,6 @@
                                         echo "<script>
                                                 var PremierSprint = $firstNumero;
                                                 var DernierSprint = $lastNumero;
-                                                console.log('Le premier sprint a pour numero : ', $firstNumero);
-                                                console.log('Le dernier sprint a pour numero : ', $lastNumero);
                                             </script>";
                             ?>
                         </select>
@@ -125,7 +123,7 @@
                 
                         var x = $("#sprintIdList").val();
                         bloquerbouton();
-                        var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/getChart/"+x);
+                        var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/getChart/"+x);
                         var heures = result[0];
                         var dates = result[1];
                         var seuils = result[2];
@@ -144,7 +142,7 @@
                 
                 $("#sprintIdList").val(x);
                 
-                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);
+                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x);
                 
                 if (result)
                 {
@@ -154,7 +152,6 @@
                 else if ( !result )
                 { 
                     if ( x < ( DernierSprint - 1 ) ){
-                    console.log('Problème sur le sprint à afficher, + , je vais donc directement au : ', SiErreurPlus);
                     $("#sprintIdList").val(SiErreurPlus);
                     misajour();
                     }
@@ -175,7 +172,7 @@
                 
                 $("#sprintIdList").val(x);
                
-                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x); //check si le resultat est true ou false
+                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x); //check si le resultat est true ou false
                     
                 if (result) //si le sprint exist, resultat true donc passage ici
                 {
@@ -185,7 +182,6 @@
                 else if( !result )
                 {
                    if  ( x > ( PremierSprint + 1 ) ){
-                       console.log('Problème sur le sprint à afficher, - , je vais donc directement au : ', SiErreurPlus);
                        $("#sprintIdList").val(SiErreurMoins);
                         misajour(); 
                    }
@@ -202,24 +198,19 @@
                 
                x = parseInt($("#sprintIdList").val());
                
-               console.log('on rentre dans bloquer bouton, x vaut : ',x);
-               
                if ((x < DernierSprint) && (x > PremierSprint)){
-                   console.log('ici');
                    $('button.ajout').prop('disabled', false);
                    $('button.suppression').prop('disabled', false);
                     }
                     
                 else if ( x == DernierSprint )
                 {
-                    console.log('ici1');
                    $('button.suppression').prop('disabled', false);
                    $('button.ajout').prop('disabled', true);
                 }
                 
                 else
                 {
-                   console.log('ici2');
                    $('button.suppression').prop('disabled', true);
                    $('button.ajout').prop('disabled', false);
                 }
@@ -256,7 +247,6 @@
                     }
                 });
                 return (exist);
-                console.log('coucou',exist)
             };
             
             //Fonction lorsque l'on choisie un nouveau sprint depuis la liste deroulante
@@ -264,7 +254,7 @@
 
                 var x = parseInt($("#sprintIdList").val());
                 
-                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/action/sprintExist/"+x);
+                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x);
                     
                 if (result)
                 {
@@ -277,8 +267,6 @@
             };
             
             misajour();
-                
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
         </script>
 

@@ -23,8 +23,9 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 require_once('./sprints.php');
 require_once('./employes.php');
 require_once('./projets.php');
-require_once('./actions.php');
+require_once('./burndownchart.php');
 require_once('./heuresdescendues.php');
+require_once('./heuresattribues.php');
 
 $app['debug'] = true;
 
