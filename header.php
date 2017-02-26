@@ -31,11 +31,9 @@
         </ul>
 
         <!-- Variables Globals / Configs -->
-        <?php
-        $conn = new mysqli('localhost', 'root', '', 'scrum') 
-        or die ('Cannot connect to db');
 
-        $host = "localhost";
+     <?php
+      include("config/boot.php");
         ?>
 
         <script>
@@ -47,7 +45,7 @@
                 $('li.active').removeClass('active');
                 $('a[href='+lastsegment+']').parent().addClass('active');
             });
-            
+
         </script>
 
     </html>
