@@ -3,31 +3,31 @@
         <?php
             include('header.php');
         ?>
-        
+
         </br>
-        
+
         <div class="container">
-        
+
             <div class="row">
-            
+
                 <!-- /// Bouton /// -->
-                <div class="col-md-1"> 
+                <div class="col-md-1">
                     <button  class="btn suppression btn-primary btn-block" onClick="moins1()">
                       <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                     </button>
                 </div>
-                
+
                 <!-- ///  AFFICHER LISTE SPRINT  /// -->
                <div  class="col-md-8">
                     <div class="form-group">
                         <select class="form-control"  id="sprintIdList" onchange='sprintIdListChanged();'>
                             <?php
-                            $result = $conn->query("select id, numero from sprint order by id desc");
-                            
+                            $result = $pdo->query("select id, numero from sprint order by id desc");
+
                                             while ($row = $result->fetch_assoc()) {
                                               unset($id, $numero);
                                               $id = $row['id'];
-                                              $numero = $row['numero']; 
+                                              $numero = $row['numero'];
                                               echo '<option value="'.$numero.'"> ' .$numero. ' </option>';
                                               if (!$lastNumero)
                                                     $lastNumero = $numero;
@@ -42,42 +42,42 @@
                         </select>
                     </div>
                 </div>
-                    
+
                 <!-- /// BOUTON -> /// -->
-                    <div class="col-md-1"> 
-                    
+                    <div class="col-md-1">
+
                         <button  class="btn ajout btn-primary btn-block" onClick="plus1()">
                           <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                         </button>
-                    
+
                     </div>
-                    
+
             </div>
-            
+
         </div>
-        
+
         </br></br>
-        
+
         <div class="container-fluid">
             <div class="col-md-1"></div>
-                <div class="col-md-5"> 
+                <div class="col-md-5">
                     <div id="container" style="height: 600;margin-top:20px;width: 1300"></div>
-                    
+
                         <script>
-                     
-                            var createChartNEW = function(heures, dates, seuils, sprintou){
-                                heures = heures.map(function (x) { 
-                                    return parseInt(x, 10); 
+
+                            let createChartNEW = function(heures, dates, seuils, sprintou){
+                                heures = heures.map(function (x) {
+                                    return parseInt(x, 10);
                                 });
-                            
-                                seuils = seuils.map(function (x) { 
-                                    return parseInt(x, 10); 
+
+                                seuils = seuils.map(function (x) {
+                                    return parseInt(x, 10);
                                 });
-                                
-                                var x = $("#sprintIdList").val();
-                                
+
+                                let x = $("#sprintIdList").val();
+
                                 console.log("Les Informations : ",heures, dates, seuils, sprintou);
-                                
+
                                 new Highcharts.Chart({
                                     chart: {
                                      renderTo: 'container'
@@ -111,116 +111,116 @@
                                     ]
                                 });
                             };
-                            
+
                         </script>
                 </div>
         </div>
-        
+
         <script>
-        
+
             /// FONCTION POUR RECCUPERER LES DONNEES DEPUIS LE SELECT, LE METTRE DANS LE LIENS DE L'API ET LE METTRE LE RESULTAT DANS LES DIFFERENTES VARIABLE ///
-            var misajour = function(){
-                
-                        var x = $("#sprintIdList").val();
+            let misajour = function(){
+
+                        let x = $("#sprintIdList").val();
                         bloquerbouton();
-                        var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/getChart/"+x);
-                        var heures = result[0];
-                        var dates = result[1];
-                        var seuils = result[2];
-                        var sprintou = result[3];
+                        let result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/getChart/"+x);
+                        let heures = result[0];
+                        let dates = result[1];
+                        let seuils = result[2];
+                        let sprintou = result[3];
                         createChartNEW(heures, dates, seuils, sprintou);
-                        $("#sprintIdList").val(x); 
-                       
+                        $("#sprintIdList").val(x);
+
             };
-        
+
             /// Lors de l'appuis sur le bouton pour voir le sprint suivant ou précédent///
-            var plus1 = function(number){
-                
-                var SiErreurPlus = parseInt($("#sprintIdList").val()) + 2; //si lorsque je vais au sprint suivant, il  me faut celui d'apres, donc + 2 au lieu de + 1 
-                
+            let plus1 = function(number){
+
+                let SiErreurPlus = parseInt($("#sprintIdList").val()) + 2; //si lorsque je vais au sprint suivant, il  me faut celui d'apres, donc + 2 au lieu de + 1
+
                 x = parseInt($("#sprintIdList").val()) + 1;
-                
+
                 $("#sprintIdList").val(x);
-                
-                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x);
-                
+
+                let result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x);
+
                 if (result)
                 {
-                    misajour();    
+                    misajour();
                 }
-                
+
                 else if ( !result )
-                { 
+                {
                     if ( x < ( DernierSprint - 1 ) ){
                     $("#sprintIdList").val(SiErreurPlus);
                     misajour();
                     }
-                    
+
                     else
                     {
-                      DemanderNouveauSprint(); 
+                      DemanderNouveauSprint();
                     }
                 }
             };
-            
+
             //////////////////////////////////////////////////////////////////
-            var moins1 = function(number){
-                
-                var SiErreurMoins = parseInt($("#sprintIdList").val()) - 2;
-                
+            let moins1 = function(number){
+
+                let SiErreurMoins = parseInt($("#sprintIdList").val()) - 2;
+
                 x = parseInt($("#sprintIdList").val()) -1;
-                
+
                 $("#sprintIdList").val(x);
-               
-                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x); //check si le resultat est true ou false
-                    
+
+                let result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x); //check si le resultat est true ou false
+
                 if (result) //si le sprint exist, resultat true donc passage ici
                 {
-                    misajour();  
+                    misajour();
                 }
-                
+
                 else if( !result )
                 {
                    if  ( x > ( PremierSprint + 1 ) ){
                        $("#sprintIdList").val(SiErreurMoins);
-                        misajour(); 
+                        misajour();
                    }
                    else{
-                        DemanderNouveauSprint(); 
+                        DemanderNouveauSprint();
                    }
-                    
+
                 }
-                
+
             };
-            
+
             //Fonction pour bloquer les bouton de changement de sprints si on est au sprint minimum ou maximum ou entre
-            var bloquerbouton = function(){
-                
+            let bloquerbouton = function(){
+
                x = parseInt($("#sprintIdList").val());
-               
+
                if ((x < DernierSprint) && (x > PremierSprint)){
                    $('button.ajout').prop('disabled', false);
                    $('button.suppression').prop('disabled', false);
                     }
-                    
+
                 else if ( x == DernierSprint )
                 {
                    $('button.suppression').prop('disabled', false);
                    $('button.ajout').prop('disabled', true);
                 }
-                
+
                 else
                 {
                    $('button.suppression').prop('disabled', true);
                    $('button.ajout').prop('disabled', false);
                 }
             };
-            
+
             //Si le sprint ne peux s'afficher alors demander a l'utilisateur d'en rentrer un nouveau
-            var DemanderNouveauSprint = function (){
-                
+            let DemanderNouveauSprint = function (){
+
                 x = parseInt(prompt("Le sprint ne peut être affiche car manque d'information, veuillez indiquer un autre sprint", x));
-                    
+
                 if (( isFinite(x) ) && ( x >= PremierSprint ) && ( x <= DernierSprint ) ){
                     $("#sprintIdList").val(x);
                     misajour();
@@ -229,11 +229,11 @@
                     DemanderNouveauSprint();
                 }
             }
-           
+
             /// FONCTION POUR TRANSFORMER L'URL COMME IL FAUT ///
-            var getdatafromurlNEW = function(myurl)
+            let getdatafromurlNEW = function(myurl)
             {
-                var exist = null;
+                let exist = null;
                 console.log("getdatafromurlNEW", myurl);
                 $.ajax({
                     url: myurl,
@@ -248,14 +248,14 @@
                 });
                 return (exist);
             };
-            
-            //Fonction lorsque l'on choisie un nouveau sprint depuis la liste deroulante
-            var sprintIdListChanged = function(){
 
-                var x = parseInt($("#sprintIdList").val());
-                
-                var result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x);
-                    
+            //Fonction lorsque l'on choisie un nouveau sprint depuis la liste deroulante
+            let sprintIdListChanged = function(){
+
+                let x = parseInt($("#sprintIdList").val());
+
+                let result = getdatafromurlNEW("http://<?php echo $host;?>/ScrumManager/api/www/burndownchart/sprintExist/"+x);
+
                 if (result)
                 {
                     misajour();
@@ -263,11 +263,11 @@
                 else{
                     DemanderNouveauSprint();
                 }
-                
+
             };
-            
+
             misajour();
-            
+
         </script>
 
     </html>

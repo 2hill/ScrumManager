@@ -1,7 +1,7 @@
     <html class="bg">
         <?php include('header.php');
 
-        $req = $conn->query('SELECT numero as nummax from sprint where id = (SELECT max(id) FROM sprint)');
+        $req = $pdo->query('SELECT numero as nummax from sprint where id = (SELECT max(id) FROM sprint)');
         $data = $req->fetch(PDO::FETCH_ASSOC);
         ?>
 
@@ -81,8 +81,8 @@
 
             //Fonction pour auto remplir la date d'aujourd'hui dans le premier input date
             function DateAujourdhui(_id){
-                var _dat = document.querySelector(_id);
-                var aujourdui = new Date(),
+                let _dat = document.querySelector(_id);
+                let aujourdui = new Date(),
                     j = aujourdui.getDate(),
                     m = aujourdui.getMonth()+1,
                     a = aujourdui.getFullYear(),
@@ -102,8 +102,8 @@
 
             //Mettre le deuxieme datapicker à 14jours après la date d'aujourd'hui.
             function DateApres(_id){
-                var _dat = document.querySelector(_id);
-                var Apres = new Date(),
+                let _dat = document.querySelector(_id);
+                let Apres = new Date(),
                     j = Apres.getDate()+14,
                     m = Apres.getMonth()+1,
                     a = Apres.getFullYear(),
