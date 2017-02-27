@@ -34,13 +34,17 @@
   include("config/boot.php");
     ?>
 
+  <!-- Links to  scripts -->
+
     <script src="js\jquery-3.1.1.min.js"></script>
-    <script src="js\bootstrap.min.js"></script>
-    <script src="js\bootstrap-datetimepicker.js"></script>
     <script src="js\jquery.dataTables.min.js"></script>
+    <script src="js\bootstrap-datetimepicker.js"></script>
+    <script src="js\bootstrap.min.js"></script>
     <script src="js\dataTables.bootstrap.min.js"></script>
     <script src="js\highcharts.js"></script>
     <script src="js\exporting.js"></script>
+    <script src="js\index.js"></script>
+
 
   </body>
 </html>
