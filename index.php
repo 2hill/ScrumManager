@@ -1,14 +1,16 @@
 <html class="bg">
 
-  <?php include('header.php');
+  <?php include ('header.php');
+
 
   $req = $pdo->query('SELECT numero as nummax from sprint where id = (SELECT max(id) FROM sprint)');
   $data = $req->fetch(PDO::FETCH_ASSOC);
   ?>
 
-  </br></br></br></br></br></br></br></br></br>
+                              <br><br><br><br>
 
-  <form method="POST" role="form" action="InsertionBdd\AjoutSprint.php">
+
+  <form method="POST" role="form" action="InsertionBdd\AjoutSprint.php" class="center-form">
 
       <div class="container">
 

@@ -11,5 +11,5 @@ $req->execute(array($_POST['numero'], $_POST['dateDebut'], $_POST['dateFin']));
 
   /* Refresh the page*/
 
-header('Location: ../page2.php');
+header('Location: ../php/page2.php');
 ?>

@@ -1,6 +1,6 @@
-// This "ready" function is invoked thanks to an addEventListener below
+/* This "ready" function is invoked thanks to an addEventListener below*/
 
-let ready = function() {
+let ready2 = function() {
 
 
     /*Function that catches data from the Sql request*/
@@ -81,5 +81,5 @@ let ready = function() {
 
 };
 
-// When the DOM is loaded, the "ready" function is triggered
+/* When the DOM is loaded, the "ready" function is triggered */
 document.addEventListener("DOMContentLoaded", ready);

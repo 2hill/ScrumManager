@@ -1,4 +1,4 @@
-/* Navigation */
+
 
 body {
     background-image: url("whitediamond.png");
@@ -25,4 +25,9 @@ body {
     color:white;
     border-bottom:5px ;
     text-align:center;
+}
+.center-form {
+  margin: 0 auto;
+  width: 90%;
+  height: 60%;
 }

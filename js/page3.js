@@ -1,9 +1,9 @@
-
-// This "ready" function is invoked thanks to an addEventListener below
+/* This "ready" function is invoked thanks to an addEventListener below*/
 
 let ready3 = function() {
 
-    /////////// Attrapper les infos de la requete sql
+    /*Function that catches data from the Sql request*/
+
     let getdatafromurlNEW = function(myurl)
     {
         let exist = null;
@@ -22,7 +22,8 @@ let ready3 = function() {
         return (exist);
     };
 
-    /////////// Fonction pour mettre à jours l'affichage
+      /*Function that update display*/
+
     let update = function(){
 
         x = parseInt($("#sprintIdList").val());
@@ -90,14 +91,19 @@ let ready3 = function() {
 
     };
 
-    //Donnée a l'objet datedebut le format de date
+     /*Give a date format to the data attribute*/
+
+
     $('#dateDebut').datetimepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         minView : 2
     });
 
-    //Changer l'affichage de la date si possible erreur
+     /*Modify date display in case of an error*/
+
+
+
     function DateAujourdhui(_id){
         let _dat = document.querySelector(_id);
         let aujourdui = new Date(),
@@ -116,9 +122,9 @@ let ready3 = function() {
         _dat.value = data;
     };
 
-    DateAujourdhui("#dateDebut");
+   DateAujourdhui("#dateDebut"); /*check message -> throw error when uncomment */
 
   };
 
-  // When the DOM is loaded, the "ready" function is triggered
+/* When the DOM is loaded, the "ready" function is triggered */
   document.addEventListener("DOMContentLoaded", ready3);

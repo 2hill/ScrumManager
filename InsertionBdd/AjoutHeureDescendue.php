@@ -12,5 +12,5 @@ $req->execute(array($_POST['nbheure'], $_POST['dateDebut'], $_POST['numerosprint
 
   /* Refresh the page*/
 
-header('Location: ../page3.php');
+header('Location: ../php/page3.php');
 ?>

@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css\dataTables.bootstrap.min.css"/>
-    <link rel="stylesheet" href="css\style.css"/>
-    <link rel="stylesheet" href="css\bootstrap.css"/>
+    <link rel="stylesheet" href="../css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.css"/>
+    <link rel="stylesheet" href="../css/style.css"/>
     <link rel="shortcut icon" href="favicon.ico"> <!-- fix the favicon error 404 -->
 
     <title>Sprint</title>
@@ -37,16 +37,17 @@
 
       <!-- Links to  scripts -->
 
-    <script src="js/jquery/jquery-3.1.1.min.js"></script>
-    <script src="js/jquery/jquery.dataTables.min.js"></script>
-    <script src="js/bootstrap/bootstrap-datetimepicker.js"></script>
-    <script src="js/bootstrap/bootstrap.min.js"></script>
-    <script src="js/bootstrap/dataTables.bootstrap.min.js"></script>
-    <script src="js/highcharts/highcharts.js"></script>
-    <script src="js/highcharts/exporting.js"></script>
-    <script src="js/index.js"></script>
-    <script src="js/page2.js"></script>
-    <script src="js/page3.js"></script>
+    <script src="../js/jquery/jquery-3.1.1.min.js"></script>
+    <script src="../js/jquery/jquery.dataTables.min.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
+    <script src="../js/bootstrap/dataTables.bootstrap.min.js"></script>
+    <script src="../js/highcharts/highcharts.js"></script>
+    <script src="../js/highcharts/exporting.js"></script>
+    <script src="../js/index.js"></script>
+    <script src="../js/page2.js"></script>
+    <script src="../js/page3.js"></script>
+    <script src="../js/page4.js"></script>
 
 
   </body>

@@ -1,6 +1,6 @@
 <?php
 
-   require_once 'config/safe.php';
+   include("config/safe.php");
 
  try
 {

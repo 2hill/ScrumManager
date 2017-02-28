@@ -11,5 +11,5 @@ from the "form" (located in "attribution of hours page") */
 
         /* Refresh the page*/
 
-        header('Location: ../page2.php');
+        header('Location: ../php/page2.php');
     ?>
