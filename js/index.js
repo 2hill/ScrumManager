@@ -1,6 +1,6 @@
 // This "ready" function is invoked thanks to an addEventListener below
 
-const ready = function() {
+let ready2 = function() {
 
 
 
@@ -66,6 +66,7 @@ const ready = function() {
                 };
 
                 //si mois dépasse 12 alors passer à l'année prochaine et remettre le bon mois.
+
                 if(m > 12){
                   m -= 12;
                   y += 1;
@@ -88,4 +89,4 @@ const ready = function() {
           };
 
 // When the DOM is loaded, the "ready" function is triggered
-document.addEventListener("DOMContentLoaded", ready);
+document.addEventListener("DOMContentLoaded", ready2);

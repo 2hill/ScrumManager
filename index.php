@@ -1,4 +1,5 @@
 <html class="bg">
+
   <?php include('header.php');
 
   $req = $pdo->query('SELECT numero as nummax from sprint where id = (SELECT max(id) FROM sprint)');
@@ -11,7 +12,7 @@
 
       <div class="container">
 
-          <!-- L'input avec le bon numero du nouveau sprint -->
+          <!-- Input that displays the number of the new sprint -->
 
           <div class="row">
           <div class="col-sm-4"></div>
@@ -29,7 +30,7 @@
 
           </br></br></br>
 
-          <!-- Les date time picker -->
+          <!-- Twitter bootstrap's date time picker -->
 
           <div class="row">
           <div class="col-sm-2"></div>
@@ -57,7 +58,7 @@
 
           </br></br>
 
-          <!-- Le Boutton submit -->
+            <!-- Twitter bootstrap's submit buttons -->
 
               <div class="row">
               <div class="col-sm-4"></div>

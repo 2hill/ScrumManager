@@ -1,17 +1,20 @@
+// This "ready" function is invoked thanks to an addEventListener below
+
+let ready = function() {
 
 
-    /////////// Attrapper les infos de la requete sql
-    let getdatafromurlNEW = function(myurl)
-    {
+    /*Function that catches data from the Sql request*/
+
+    let getdatafromurlNEW = function(myurl) {
         let exist = null;
         console.log("getdatafromurlNEW", myurl);
         $.ajax({
             url: myurl,
             async: false,
-            success: function(result){
+            success: function(result) {
                 exist = result;
             },
-            error: function(xhr){
+            error: function(xhr) {
                 console.log("error NEW", xhr);
 
             }
@@ -19,52 +22,64 @@
         return (exist);
     };
 
-    /////////// Fonction pour mettre à jour l'affichage
-    let update = function(){
-    x = parseInt($("#sprintIdList").val());
+    /*Function that update display*/
 
-    let hatt = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gethouratt/"+x);
-    let tothatt = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gettothouratt/"+x);
+    let update = function() {
+        x = parseInt($("#sprintIdList").val());
 
-    let hours = hatt[2];
+        let hatt = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gethouratt/" + x);
+        let tothatt = getdatafromurlNEW("http://localhost/ScrumManager/api/www/action/gettothouratt/" + x);
 
-    let Lehatt = [];
-    let Letothatt = [];
+        let hours = hatt[2];
 
-    for (i = 1; i < hours.length; i++) {
-        Lehatt.push({name: hatt[0][i], project: hatt[1][i], hours: hatt[2][i]});
-    }
+        let Lehatt = [];
+        let Letothatt = [];
 
-    Letothatt.push({tot: tothatt[0]});
+        for (i = 1; i < hours.length; i++) {
+            Lehatt.push({
+                name: hatt[0][i],
+                project: hatt[1][i],
+                hours: hatt[2][i]
+            });
+        }
 
-    console.log('Une fois heure attribue convertie en objet js : ',Lehatt);
-    console.log('Une fois total heure attribue convertie en objet js : ',Letothatt);
+        Letothatt.push({
+            tot: tothatt[0]
+        });
 
-    $('#datatable').DataTable({
-        "bDestroy": true,
-        data: Lehatt,
-        columns: [
-            { data: 'name' },
-            { data: 'project' },
-            { data: 'hours' }
-        ]
-    });
+        console.log('Une fois heure attribue convertie en objet js : ', Lehatt);
+        console.log('Une fois total heure attribue convertie en objet js : ', Letothatt);
 
-    $('#datatable2').DataTable({
-        "paging":   false,
-        "ordering": false,
-        "info":     false,
-        "bFilter": false,
-        "bDestroy": true,
-        data: Letothatt,
-        columns: [
-            { data: 'tot' }
-        ]
-    });
+        $('#datatable').DataTable({
+            "bDestroy": true,
+            data: Lehatt,
+            columns: [{
+                    data: 'name'
+                },
+                {
+                    data: 'project'
+                },
+                {
+                    data: 'hours'
+                }
+            ]
+        });
+
+        $('#datatable2').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "bFilter": false,
+            "bDestroy": true,
+            data: Letothatt,
+            columns: [{
+                data: 'tot'
+            }]
+        });
 
     };
 
-    /////////// Au premier lancement de la page
-    $(document).ready(function() {
-        update();
-    } );
+};
+
+// When the DOM is loaded, the "ready" function is triggered
+document.addEventListener("DOMContentLoaded", ready);

@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css\dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="css\style.css"/>
     <link rel="stylesheet" href="css\bootstrap.css"/>
+    <link rel="shortcut icon" href="favicon.ico"> <!-- fix the favicon error 404 -->
 
     <title>Sprint</title>
   </head>
@@ -34,7 +35,7 @@
   include("config/boot.php");
     ?>
 
-  <!-- Links to  scripts -->
+      <!-- Links to  scripts -->
 
     <script src="js\jquery-3.1.1.min.js"></script>
     <script src="js\jquery.dataTables.min.js"></script>
@@ -44,6 +45,8 @@
     <script src="js\highcharts.js"></script>
     <script src="js\exporting.js"></script>
     <script src="js\index.js"></script>
+    <script src="js\page2.js"></script>
+    <script src="js\page3.js"></script>
 
 
   </body>
