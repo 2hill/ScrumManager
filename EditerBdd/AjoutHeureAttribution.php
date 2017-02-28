@@ -3,7 +3,7 @@
 /*Connection to the db and insert data collected
 from the "form" (located in "attribution of hours page") */
 
-         require_once '../config/boot.php';
+        require_once '../config/boot.php';
 
 
         $req = $pdo->prepare('INSERT INTO attribution (heure, id_Sprint, id_Employe, id_Projet) VALUES(?, ?, ?, ?)');
